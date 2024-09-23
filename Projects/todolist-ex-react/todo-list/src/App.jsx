@@ -37,6 +37,17 @@ function App() {
     })
   }
 
+  let handleDelete = (id) => {
+    axios.delete(`${API_URL}/${id}`)
+    .then(function (response) {
+      // handle success
+      setUsers(users.filter(user => user.id !== id));
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+  }
 
   return (
     <> 
@@ -51,7 +62,9 @@ function App() {
     {users.map((user) => (
         <li className='mt-3' key={user.id}>{user.name} 
         <button className='bg-blue-500 text-white px-3 ml-5'>Edit</button>
-        <button className='bg-red-500 text-white px-3 ml-3'>Delete</button>
+        <button className='bg-red-500 text-white px-3 ml-3'
+        onClick={() => handleDelete(user.id)}
+        >Delete</button>
         </li>
       ))}
       </ul>

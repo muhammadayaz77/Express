@@ -41,7 +41,7 @@ app.post('/api/users', (req, res) => {
 // update user
 app.put('/api/users/:id', (req, res) => {
     const userId = parseInt(req.params.id)
-    const userIndex = users.findIndex(user => user.id === userId)
+    const userIndex = users.findIndex(user => user.id === userId);
 
     if (userIndex !== -1) {
         const updatedUser = { ...users[userIndex], ...req.body }

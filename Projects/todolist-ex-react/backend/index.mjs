@@ -26,6 +26,20 @@ app.post('/api/data',(req,res) => {
 
 })
 
+app.delete('/api/data/:id',(req,res) => {
+    console.log(req.params.id)
+    let userId = parseInt(req.params.id);
+    let userIndex = users.findIndex(user => user.id == userId);
+
+    if(userIndex !== -1){
+      users.splice(userIndex,1);
+      res.status(200).json({message : `Users with ID : ${userId} Deleted`})
+    }
+    else{
+      res.status(404).json({message : `Users with ID : ${userId} not found`})
+    }
+})
+
 app.listen(PORT,() => {
   console.log(`http://localhost:${PORT}`)
 })
