@@ -45,7 +45,7 @@ app.put('/api/users/:id', (req, res) => {
 
     if (userIndex !== -1) {
         const updatedUser = { ...users[userIndex], ...req.body }
-
+        
         // update user in array
         users[userIndex] = updatedUser
         res.status(200).json({ message: `User with id ${userId} updated 😊`, updatedUser })

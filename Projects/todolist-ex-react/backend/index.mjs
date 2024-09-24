@@ -26,6 +26,20 @@ app.post('/api/data',(req,res) => {
 
 })
 
+app.put('/api/data/:id',(req,res) => {
+  let userId = parseInt(req.params.id);
+  let userIndex = users.findIndex(user => user.id === userId);
+
+  if(userIndex !== -1){
+    let updateUser = {...users[userIndex],...req.body};
+    users[Index] = updateUser;
+    res.status(200).json({ message: `User with id ${userId} updated 😊`, updateUser });
+  }
+  else{
+    res.status(404).json({ message: `User with id ${userId} not found` });
+  }
+})
+
 app.delete('/api/data/:id',(req,res) => {
     console.log(req.params.id)
     let userId = parseInt(req.params.id);
