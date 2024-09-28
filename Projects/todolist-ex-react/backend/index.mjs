@@ -1,59 +1,57 @@
 import express from 'express'
 import cors from 'cors'
 let app = express();
-let PORT = 3000;
 
 app.use(express.json());
-app.use(cors())
-
-const users = [
-  { id: 1, name: 'John Doe', email: 'john@example.com' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+app.use(cors());
+let users = [
+  {id : 1,name : 'ali',email : 'ali@gmail.com',},
+  {id : 2,name : 'khan',email : 'khan@gmail.com',},
 ]
-
-app.get('/api/data',(req,res) => {
-  res.status(200).json(users)
+app.get("/api/data",(req,res) => {
+  res.json(users)
 })
-app.post('/api/data',(req,res) => {
-  let body = req.body;
+app.post('/api/data', (req, res) => {
+  const body = req.body;
 
-  let newUser = {
-    id : users.length + 1,
-    ...body,
+  const newUser = {
+      id: users.length + 1,
+      ...body
   }
-  users.push(newUser);
+
+  users.push(newUser)
   res.status(201).json({ message: 'New user created!', data: newUser })
-
 })
 
-app.put('/api/data/:id',(req,res) => {
-  let userId = parseInt(req.params.id);
-  let userIndex = users.findIndex(user => user.id === userId);
+app.put('/api/data/:id', (req, res) => {
+  const userId = parseInt(req.params.id)
+  const userIndex = users.findIndex(user => user.id === userId);
 
-  if(userIndex !== -1){
-    let updateUser = {...users[userIndex],...req.body};
-    users[Index] = updateUser;
-    res.status(200).json({ message: `User with id ${userId} updated 😊`, updateUser });
+  if (userIndex !== -1) {
+      const updatedUser = { ...users[userIndex], ...req.body }
+      
+      // update user in array
+      users[userIndex] = updatedUser
+      res.status(200).json({ message: `User with id ${userId} updated 😊`, updatedUser })
+  } else {
+      res.status(404).json({ message: `User with id ${userId} not found 😢` })
   }
-  else{
-    res.status(404).json({ message: `User with id ${userId} not found` });
+})
+
+app.delete('/api/data/:id', (req, res) => {
+  const userId = parseInt(req.params.id)
+  const userIndex = users.findIndex(user => user.id === userId);
+
+  if (userIndex !== -1) {
+      // remove user from array
+      // const deletedUser = users.splice(userIndex, 1)
+      users.splice(userIndex, 1);
+      res.status(200).json({ message: `User with id ${userId} deleted 😊` })
+  } else {
+      res.status(404).json({ message: `User with id ${userId} not found 😢` })
   }
 })
 
-app.delete('/api/data/:id',(req,res) => {
-    console.log(req.params.id)
-    let userId = parseInt(req.params.id);
-    let userIndex = users.findIndex(user => user.id == userId);
-
-    if(userIndex !== -1){
-      users.splice(userIndex,1);
-      res.status(200).json({message : `Users with ID : ${userId} Deleted`})
-    }
-    else{
-      res.status(404).json({message : `Users with ID : ${userId} not found`})
-    }
-})
-
-app.listen(PORT,() => {
-  console.log(`http://localhost:${PORT}`)
+app.listen(3000,() => {
+  console.log('http://localhost:3000')
 })
