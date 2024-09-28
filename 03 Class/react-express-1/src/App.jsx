@@ -72,7 +72,9 @@ function App() {
             onChange={(e) => setUpdateUser({ ...updateUser, name: e.target.value })}
             placeholder="Update user name"
           />
-          <button onClick={() => updateUserById(updateUser.id)}>Update User</button>
+          <button
+           onClick={() => updateUserById(updateUser.id)}
+           >Update User</button>
         </div>
       )}
 
@@ -80,7 +82,9 @@ function App() {
         {users.map(user => (
           <li key={user.id}>
             {user.name}
-            <button onClick={() => setUpdateUser({ id: user.id, name: user.name })}>
+            <button 
+            onClick={() => setUpdateUser({ id: user.id, name: user.name })}
+            >
               Edit
             </button>
             <button onClick={() => deleteUserById(user.id)}>Delete</button>
