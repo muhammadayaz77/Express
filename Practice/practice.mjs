@@ -42,51 +42,105 @@
 // })
 
 
+// import express from 'express'
+// import cors from 'cors'
+// let app = express();
+// app.use(express.json());
+// app.use(cors());
+
+// let users = [
+//   {id : 1,name : 'ali' , email : 'ali@gmail.com',},
+//   {id : 2,name : 'fahad' , email : 'fahad@gmail.com',}
+// ]
+
+// app.get('/api/data',(req,res) => {
+//   res.json(users)
+// })
+
+// app.post('/api/data',(req,res) => {
+//   let newData = {
+//     id : users.length + 1,
+//     ...req.body
+//   }
+//   users.push(newData);
+//   res.status(200).json(users);
+// })
+// app.delete('/api/data/:id',(req,res) => {
+//   let userId = parseInt(req.params.id);
+//   let updatedUser = users.filter(user => user.id !== userId);
+//   users = updatedUser
+//     res.json({message : 'data is deleted'});
+// })
+// app.put('/api/data/:id',(req,res) => {
+//   let userIndex = users.findIndex(user => user.id === parseInt(req.params.id));
+//   if(userIndex !== -1)
+//   {
+//     let newUser = {
+//         ...users[userIndex],
+//         ...req.body,
+//     }
+//     users[userIndex] = newUser;
+//     res.status(200).json(users)    
+//   }
+//   else{
+//     res.status(404).json({message : 'Something went wrong'});
+//   }
+
+// })
+// app.listen(3000,() => {
+//   console.log('http://localhost:3000');
+// })
+
 import express from 'express'
 import cors from 'cors'
+let PORT = 3000;
+let users = [
+  {id : 1,name : 'ali',email : 'ali@gmail.com'},
+  {id : 2,name : 'ayaz',email : 'ayaz@gmail.com'},
+]
+
 let app = express();
 app.use(express.json());
 app.use(cors());
 
-let users = [
-  {id : 1,name : 'ali' , email : 'ali@gmail.com',},
-  {id : 2,name : 'fahad' , email : 'fahad@gmail.com',}
-]
 
-app.get('/api/data',(req,res) => {
-  res.json(users)
+app.get('/api/users',(req,res) => {
+  res.status(200).json(users)
 })
-
-app.post('/api/data',(req,res) => {
-  let newData = {
+app.post('/api/users',(req,res) => {
+  let body = req.body;
+  let newObj = {
     id : users.length + 1,
-    ...req.body
+    ...body
   }
-  users.push(newData);
-  res.status(200).json(users);
+  users.push(newObj);
+  res.json({message : `data has been post`,data: newObj})
 })
-app.delete('/api/data/:id',(req,res) => {
-  let userId = parseInt(req.params.id);
-  let updatedUser = users.filter(user => user.id !== userId);
-  users = updatedUser
-    res.json({message : 'data is deleted'});
-})
-app.put('/api/data/:id',(req,res) => {
-  let userIndex = users.findIndex(user => user.id === parseInt(req.params.id));
-  if(userIndex !== -1)
-  {
-    let newUser = {
-        ...users[userIndex],
-        ...req.body,
+app.delete('/api/users/:id',(req,res) => {
+    let userId = parseInt(req.params.id);
+    let userIndex = users.findIndex(item => item.id == userId);
+    if(userIndex != -1){
+      users = users.filter(item => item.id !== userId);
+      res.status(200).json({message : `data of Id : ${userId} deleted`});
     }
-    users[userIndex] = newUser;
-    res.status(200).json(users)    
-  }
-  else{
-    res.status(404).json({message : 'Something went wrong'});
-  }
-
+    else{
+      res.status(404).json({message : 'id is invalid'});
+    }
 })
-app.listen(3000,() => {
-  console.log('http://localhost:3000');
+app.put('/api/users/:id',(req,res) => {
+    let userId = parseInt(req.params.id);
+    let userIndex = users.findIndex(item => item.id == userId);
+    if(userIndex != -1){
+      let newObj = {...users[userIndex],...req.body};
+      users[userIndex] = newObj;
+      
+      res.status(200).json({message : `data of Id : ${userId} update`});
+    }
+    else{
+      res.status(404).json({message : 'id is invalid',id:userId});
+    }
+})
+
+app.listen(PORT,() => {
+  console.log(`http://localhost:${PORT}`);
 })
