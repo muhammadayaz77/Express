@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 function App() {
   let [users,setUsers] = useState([]);
+  let [updateUser,setUpdateUser] = useState({id : '',name : '',email : ''})
   let name = useRef();
   let email = useRef();
   useEffect(() => {
@@ -48,6 +49,27 @@ function App() {
     console.log(error);
   })
   }
+  let handleUpdate = () => {
+    axios.put(`http://localhost:3000/api/users/${updateUser.id}`,{id : updateUser.id,name : updateUser.name,
+      email : updateUser.email
+    })
+    .then(function (response) {
+      // handle success
+      document.getElementById('my_modal_6').close();
+      fetchedUser()
+      
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+
+  }
+  let handleEditClick = (user) => {
+    setUpdateUser({id : user.id,name : user.name,email : user.email});
+    document.getElementById('my_modal_6').show();
+    
+  }
   return (
     <div className='App flex justify-center h-screen items-center'>
       <div className='border-2 w-[35%]'>
@@ -80,8 +102,9 @@ function App() {
               </td>
               <td class="px-6 py-4">
                 
-        <a onClick={()=>document.getElementById('my_modal_6').showModal()} 
-                  href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+        <a
+        onClick={() => handleEditClick(user)} 
+                   class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                   <button
                   onClick={() => handleDelete(user.id)}
                   className='bg-red-600 text-sm px-2 outline-none text-white'>DELETE</button>
@@ -126,12 +149,18 @@ function App() {
     <div className="modal-action">
       <div method="dialog" className=' w-full'>
         <input 
-        ref={name}
+        value={updateUser.name}
+        onChange={(e) => setUpdateUser({...updateUser,name : e.target.value})}
         type="text" placeholder='Enter Your Name' className='px-5 py-2 w-[100%] border-2 ' />
         
-        <button className="btn outline-none py-1 bg-blue-600"
+        <input 
+        value={updateUser.email}
+        onChange={(e) => setUpdateUser({...updateUser,email : e.target.value})}
+        type="text" placeholder='Enter Your Email' className='px-5 py-2 w-[100%] border-2 mt-3' />
         
-        >Add</button>
+        <button className="btn outline-none py-1 bg-blue-600"
+        onClick={handleUpdate}
+        >Update</button>
       </div>
     </div>
   </div>
