@@ -38,6 +38,10 @@ app.put('/users/:id',async (req,res) => {
     let updateUser = await User.findByIdAndUpdate(req.params.id,req.body,{new:true});
     res.status(200).send(updateUser);
 })
+app.delete('/users/:id',async (req,res) => {
+    let deletedUser = await User.findByIdAndDelete(req.params.id);
+    res.status(200).send(deletedUser);
+})
 app.listen(3000,() => {
   console.log('http://localhost:3000');
 })
