@@ -28,7 +28,7 @@ app.post('/users',async (req,res) => {
 app.get('/users',async (req,res) => {
     try {
       let users = await User.find();
-    res.status(200).send(users);
+    res.status(200).send(users)
     } catch (error) {
       res.status(500).send({ error: error.message });
     }
